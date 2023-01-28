@@ -5,10 +5,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -79,7 +76,7 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
@@ -99,7 +96,19 @@ public class JobData {
         loadData();
 
         // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        // FOR EACH JOB ELEMENT IN THE ALL JOBS ARRAY LIST
+        for (HashMap<String, String> job : allJobs) {
+
+            //LOOP THROUGH EACH INDEX OF THE JOB KEY/VALUE PAIRS. IF THE CURRENT INDEX'S VALUE IS THE SAME AS THE SEARCH TERM, ADD IT TO JOBS ARRAY LIST + RETURN THE ARRAY
+            for (Map.Entry<String, String> index : job.entrySet()) {
+                if(index.getValue().toLowerCase().contains(value.toLowerCase())) { //&& !jobs.contains(index.getValue())) {
+                    jobs.add(job);
+                }
+            }
+        }
+        return jobs;
     }
 
     /**
@@ -115,11 +124,11 @@ public class JobData {
         try {
 
             // Open the CSV file and set up pull out column header info and records
-            Reader in = new FileReader(DATA_FILE);
-            CSVParser parser = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
-            List<CSVRecord> records = parser.getRecords();
-            Integer numberOfColumns = records.get(0).size();
-            String[] headers = parser.getHeaderMap().keySet().toArray(new String[numberOfColumns]);
+            Reader in = new FileReader(DATA_FILE); // VARIABLE "IN" OF TYPE READER IS INSTANTIATED WITH A NEW INSTANCE OF THE FILE READER CLASS + PASSES IN THE CSV FILE AS AN ARGUMENT IN ORDER TO READ IT.
+            CSVParser parser = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in); // PARSES THROUGH THE CSV FILE AND FORMATS THE FILE WITH THE FIRST RECORD AS HEADER
+            List<CSVRecord> records = parser.getRecords(); // GET THE RECORDS + INSTANTIATES THEM AS A LIST
+            Integer numberOfColumns = records.get(0).size(); // GETS THE SIZE FROM THE ELEMENT IN THE RECORDS LIST AT INDEX 0, AND SETS THAT TO BE THE NUMBER OF COLUMNS
+            String[] headers = parser.getHeaderMap().keySet().toArray(new String[numberOfColumns]); // ARRAY OF STRINGS --
 
             allJobs = new ArrayList<>();
 
@@ -142,5 +151,6 @@ public class JobData {
             e.printStackTrace();
         }
     }
+
 
 }

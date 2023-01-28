@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+
 /**
  * Created by LaunchCode
  */
@@ -61,8 +62,9 @@ public class TechJobs {
                 System.out.println("\nSearch term:");
                 String searchTerm = in.nextLine();
 
+
                 if (searchField.equals("all")) {
-                    printJobs(JobData.findByValue(searchTerm));
+                        printJobs(JobData.findByValue(searchTerm));
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
@@ -77,7 +79,7 @@ public class TechJobs {
         Boolean validChoice = false;
         String[] choiceKeys = new String[choices.size()];
 
-        // Put the choices in an ordered structure so we can
+        // Put the choices in an ordered structure, so we can
         // associate an integer with each one
         int i = 0;
         for (String choiceKey : choices.keySet()) {
@@ -120,6 +122,26 @@ public class TechJobs {
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+
+
+            //FOR EACH JOB ELEMENT IN THE SOME JOBS ARRAYLIST
+        for (HashMap<String, String> job: someJobs) {
+                //System.out.println(" ");
+                System.out.println("\n*****");
+
+                //LOOP THROUGH EACH ELEMENT OF THE OBJECT + PRINT THE KEY + VALUE
+            for (Map.Entry <String, String> index: job.entrySet()) {
+                System.out.println(index.getKey() + ": " + index.getValue());
+            }
+            System.out.println("*****");
+            //System.out.println(" ");
+
+        }
+        if(someJobs.isEmpty()) {
+            System.out.print("No Results");
+        }
+//        System.out.println("printJobs is not implemented yet");
     }
+
+
 }
